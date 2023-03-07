@@ -1,13 +1,12 @@
-//all thing in installed and require  for making sever
+//all thing is installed and require  for making sever
 const http = require("http")
 const express = require("express")
 const cors = require("cors")
 const socketIO = require("socket.io")
 //now making server
 const app = express();
-const port =  process.env.PORT  
-const server = http.createServer(app)//expresss is called here as a app
-const io = socketIO(server)
+const port = process.env.PORT || 4500
+
 
 const users = [{}]
 
@@ -16,14 +15,17 @@ app.use(cors)
 
 
 // response on web page
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
     res.send("this is response of server")
-})
+    console.log('server ka console')
+});
+const server = http.createServer(app)//expresss is called here as a app
+const io = socketIO(server)
 
 //when io's connection  curcuit is on 
 //here io is a whole circuit and socket is individual user
 io.on("connection", (socket) => {
-    console.log("new connection")
+    console.log("new connection");
     //receiving user (1)
     socket.on('joined', ({ user }) => {
         //user will save on socket.id, every socket have different socket id
@@ -47,9 +49,9 @@ io.on("connection", (socket) => {
         console.log("user left")
     })
     //now for message(1)
-socket.on('message',({message,id})=>{
-io.emit('sendmessage',{user:users[id],message,id})
-})
+    socket.on('message', ({ message, id }) => {
+        io.emit('sendmessage', { user: users[id], message, id })
+    })
 
 })
 
