@@ -5,19 +5,19 @@ const cors = require("cors")
 const socketIO = require("socket.io")
 //now making server
 const app = express();
-const port = process.env.PORT 
+const port = process.env.PORT
 
 
 const users = [{}]
 
 // cors is used for intercommunication between url
-app.use(cors)
+app.use(cors())
 
 
 // response on web page
 app.get('/', (req, res) => {
     res.send("this is response of server")
-    console.log('server ka console')
+
 });
 const server = http.createServer(app)//expresss is called here as a app
 const io = socketIO(server)
